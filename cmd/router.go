@@ -73,7 +73,13 @@ func NewRouter(opts ...RouterOption) *Router {
 }
 
 func (r *Router) Register(name string, registrar func(*Router), opts ...RouterOption) {
-	opts = append(opts, WithName(name), WithArgs(r.args[1:]))
+
+	args := []string{}
+	if len(r.args) > 1 {
+		args = r.args[1:]
+	}
+	opts = append(opts, WithName(name), WithArgs(args))
+
 	router := NewRouter(opts...)
 	if registrar != nil {
 		registrar(router)
